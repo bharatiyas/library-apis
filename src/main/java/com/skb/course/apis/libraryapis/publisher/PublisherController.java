@@ -2,6 +2,7 @@ package com.skb.course.apis.libraryapis.publisher;
 
 import com.skb.course.apis.libraryapis.exception.LibraryResourceAlreadyExistException;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceNotFoundException;
+import com.skb.course.apis.libraryapis.util.LibraryApiUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +65,15 @@ public class PublisherController {
         }
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path = "/search")
+    public ResponseEntity<?> searchPublisher(@RequestParam String name) {
+
+        if(!LibraryApiUtils.doesStringValueExist(name)) {
+            return new ResponseEntity<>("Please enter a name to search Publisher.", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(publisherService.searchPublisher(name), HttpStatus.OK);
     }
 }
