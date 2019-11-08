@@ -7,7 +7,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PublisherService {
@@ -76,9 +79,6 @@ public class PublisherService {
 
     }
 
-    private Publisher createPublisherFromEntity(PublisherEntity pe) {
-        return new Publisher(pe.getPublisherid(), pe.getName(), pe.getEmailId(), pe.getPhoneNumber());
-    }
 
     public void deletePublisher(Integer publisherId) throws LibraryResourceNotFoundException {
 
@@ -87,5 +87,29 @@ public class PublisherService {
         } catch(EmptyResultDataAccessException e) {
             throw new LibraryResourceNotFoundException("Publisher Id: " + publisherId + " Not Found");
         }
+    }
+
+    public List<Publisher> searchPublisher(String name) {
+
+        List<PublisherEntity> publisherEntities = null;
+        if(LibraryApiUtils.doesStringValueExist(name)) {
+            publisherEntities = publisherRepository.findByNameContaining(name);
+        }
+        if(publisherEntities != null && publisherEntities.size() > 0) {
+            return createPublishersForSearchResponse(publisherEntities);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Publisher> createPublishersForSearchResponse(List<PublisherEntity> publisherEntities) {
+
+        return publisherEntities.stream()
+                .map(pe -> createPublisherFromEntity(pe))
+                .collect(Collectors.toList());
+    }
+
+    private Publisher createPublisherFromEntity(PublisherEntity pe) {
+        return new Publisher(pe.getPublisherid(), pe.getName(), pe.getEmailId(), pe.getPhoneNumber());
     }
 }
