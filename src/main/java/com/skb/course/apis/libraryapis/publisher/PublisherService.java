@@ -4,6 +4,7 @@ import com.skb.course.apis.libraryapis.exception.LibraryResourceAlreadyExistExce
 import com.skb.course.apis.libraryapis.exception.LibraryResourceNotFoundException;
 import com.skb.course.apis.libraryapis.util.LibraryApiUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -77,5 +78,14 @@ public class PublisherService {
 
     private Publisher createPublisherFromEntity(PublisherEntity pe) {
         return new Publisher(pe.getPublisherid(), pe.getName(), pe.getEmailId(), pe.getPhoneNumber());
+    }
+
+    public void deletePublisher(Integer publisherId) throws LibraryResourceNotFoundException {
+
+        try {
+            publisherRepository.deleteById(publisherId);
+        } catch(EmptyResultDataAccessException e) {
+            throw new LibraryResourceNotFoundException("Publisher Id: " + publisherId + " Not Found");
+        }
     }
 }
