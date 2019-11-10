@@ -1,10 +1,10 @@
 package com.skb.course.apis.libraryapis.exception;
 
-public class LibraryResourceAlreadyExistException extends Exception {
+public class LibraryResourceBadRequestException extends Exception {
 
     private String traceId;
 
-    public LibraryResourceAlreadyExistException(String traceId, String message) {
+    public LibraryResourceBadRequestException(String traceId, String message) {
         super(message);
         this.traceId = traceId;
     }
