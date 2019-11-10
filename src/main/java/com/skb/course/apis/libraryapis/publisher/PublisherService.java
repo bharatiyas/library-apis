@@ -8,12 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +41,7 @@ public class PublisherService {
             addedPublisher = publisherRepository.save(publisherEntity);
         } catch (DataIntegrityViolationException e) {
             logger.error("TraceId: {}, Publisher already exists!!", traceId, e);
-            throw new LibraryResourceAlreadyExistException("TraceId: " + traceId + ", Publisher already exists!!");
+            throw new LibraryResourceAlreadyExistException(traceId, "Publisher already exists!!");
         }
 
         publisherToBeAdded.setPublisherId(addedPublisher.getPublisherid());
@@ -60,7 +58,7 @@ public class PublisherService {
             PublisherEntity pe = publisherEntity.get();
             publisher = createPublisherFromEntity(pe);
         } else {
-            throw new LibraryResourceNotFoundException("TraceId: " + traceId + ", Publisher Id: " + publisherId + " Not Found");
+            throw new LibraryResourceNotFoundException(traceId, "Publisher Id: " + publisherId + " Not Found");
         }
 
         return publisher;
@@ -83,7 +81,7 @@ public class PublisherService {
             publisherRepository.save(pe);
             publisherToBeUpdated = createPublisherFromEntity(pe);
         } else {
-            throw new LibraryResourceNotFoundException("TraceId: " + traceId + ", Publisher Id: " + publisherToBeUpdated.getPublisherId() + " Not Found");
+            throw new LibraryResourceNotFoundException(traceId, "Publisher Id: " + publisherToBeUpdated.getPublisherId() + " Not Found");
         }
 
     }
@@ -94,7 +92,8 @@ public class PublisherService {
         try {
             publisherRepository.deleteById(publisherId);
         } catch(EmptyResultDataAccessException e) {
-            throw new LibraryResourceNotFoundException("TraceId: " + traceId + ", Publisher Id: " + publisherId + " Not Found");
+            logger.error("TraceId: {}, Publisher Id: {} Not Found", traceId, publisherId, e);
+            throw new LibraryResourceNotFoundException(traceId, "Publisher Id: " + publisherId + " Not Found");
         }
     }
 
