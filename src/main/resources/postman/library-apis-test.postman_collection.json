@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "3daa1a4b-718a-4329-abf9-7c4b2c53c021",
+		"name": "library-apis-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "publisher",
+			"item": [
+				{
+					"name": "Create-Publisher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Trace-Id",
+								"value": "Create-Publisher-5678",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Fox Publishers\",\n\t\"emailId\":\"foxpublishers@email.com\",\n\t\"phoneNumber\":\"563-458-700\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/publishers/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"publishers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Publisher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/publishers/130390",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"publishers",
+								"130390"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Publisher",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Trace-Id",
+								"value": "update-publisher-1234",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Sanjay Publisher\",\n\t\"emailId\":\"spublishers@email.com\",\n\t\"phoneNumber\":\"533-456-675\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/publishers/1204677",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"publishers",
+								"1204677"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Publisher",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/publishers/130377",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"publishers",
+								"130377"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search-Publisher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "author",
+			"item": [
+				{
+					"name": "Create-Author",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Trace-Id",
+								"value": "Create-Publisher-5678",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Blake\",\n  \"dateOfBirth\": \"1960-01-20\",\n  \"gender\": \"Male\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/authors/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"authors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Author",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/authors/3063",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"authors",
+								"3063"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Author",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Author",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/authors/3063",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"authors",
+								"3063"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search-Author",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/authors/search?firstName=John&lastName=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"authors",
+								"search"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "John"
+								},
+								{
+									"key": "lastName",
+									"value": ""
+								},
+								{
+									"key": null,
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
