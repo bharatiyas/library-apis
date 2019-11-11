@@ -1,8 +1,10 @@
-package com.skb.course.apis.libraryapis.publisher;
+package com.skb.course.apis.libraryapis.author;
 
 import com.skb.course.apis.libraryapis.exception.LibraryResourceAlreadyExistException;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceBadRequestException;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceNotFoundException;
+import com.skb.course.apis.libraryapis.author.Author;
+import com.skb.course.apis.libraryapis.author.AuthorService;
 import com.skb.course.apis.libraryapis.util.LibraryApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,19 +16,19 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/v1/publishers")
-public class PublisherController {
+@RequestMapping(path = "/v1/authors")
+public class AuthorController {
 
-    private static Logger logger = LoggerFactory.getLogger(PublisherController.class);
+    private static Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
-    private PublisherService publisherService;
+    private AuthorService authorService;
 
-    public PublisherController(PublisherService publisherService) {
-        this.publisherService = publisherService;
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
     }
 
-    @GetMapping(path = "/{publisherId}")
-    public ResponseEntity<?> getPublisher(@PathVariable Integer publisherId,
+    @GetMapping(path = "/{authorId}")
+    public ResponseEntity<?> getAuthor(@PathVariable Integer authorId,
                                           @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceNotFoundException {
 
@@ -34,28 +36,28 @@ public class PublisherController {
             traceId = UUID.randomUUID().toString();
         }
 
-        return new ResponseEntity<>(publisherService.getPublisher(publisherId, traceId), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.getAuthor(authorId, traceId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> addPublisher(@Valid @RequestBody Publisher publisher,
+    public ResponseEntity<?> addAuthor(@Valid @RequestBody Author author,
                                           @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceAlreadyExistException {
 
-        logger.debug("Request to add Publisher: {}", publisher);
+        logger.debug("Request to add Author: {}", author);
         if(!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
         logger.debug("Added TraceId: {}", traceId);
-        publisherService.addPublisher(publisher, traceId);
+        authorService.addAuthor(author, traceId);
 
         logger.debug("Returning response for TraceId: {}", traceId);
-        return new ResponseEntity<>(publisher, HttpStatus.CREATED);
+        return new ResponseEntity<>(author, HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{publisherId}")
-    public ResponseEntity<?> updatePublisher(@PathVariable Integer publisherId,
-                                             @Valid @RequestBody Publisher publisher,
+    @PutMapping(path = "/{authorId}")
+    public ResponseEntity<?> updateAuthor(@PathVariable Integer authorId,
+                                             @Valid @RequestBody Author author,
                                              @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceNotFoundException {
 
@@ -63,14 +65,14 @@ public class PublisherController {
             traceId = UUID.randomUUID().toString();
         }
 
-        publisher.setPublisherId(publisherId);
-        publisherService.updatePublisher(publisher, traceId);
+        author.setAuthorId(authorId);
+        authorService.updateAuthor(author, traceId);
 
-        return new ResponseEntity<>(publisher, HttpStatus.OK);
+        return new ResponseEntity<>(author, HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/{publisherId}")
-    public ResponseEntity<?> deletePublisher(@PathVariable Integer publisherId,
+    @DeleteMapping(path = "/{authorId}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable Integer authorId,
                                              @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceNotFoundException {
 
@@ -78,12 +80,12 @@ public class PublisherController {
             traceId = UUID.randomUUID().toString();
         }
 
-        publisherService.deletePublisher(publisherId, traceId);
+        authorService.deleteAuthor(authorId, traceId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<?> searchPublisher(@RequestParam String name,
+    public ResponseEntity<?> searchAuthor(@RequestParam String firstName, @RequestParam String lastName,
                                              @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceBadRequestException {
 
@@ -91,11 +93,11 @@ public class PublisherController {
             traceId = UUID.randomUUID().toString();
         }
 
-        if(!LibraryApiUtils.doesStringValueExist(name)) {
-            logger.error("TraceId: {}, Please enter a name to search Publisher!!", traceId);
-            throw new LibraryResourceBadRequestException(traceId, "Please enter a name to search Publisher.");
+        if(!LibraryApiUtils.doesStringValueExist(firstName) && !LibraryApiUtils.doesStringValueExist(lastName)) {
+            logger.error("TraceId: {}, Please enter at least one search criteria to search Authors!!", traceId);
+            throw new LibraryResourceBadRequestException(traceId, "Please enter a name to search Author.");
         }
 
-        return new ResponseEntity<>(publisherService.searchPublisher(name, traceId), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.searchAuthor(firstName, lastName, traceId), HttpStatus.OK);
     }
 }
