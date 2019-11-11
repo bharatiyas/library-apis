@@ -1,5 +1,7 @@
 package com.skb.course.apis.libraryapis.testutils;
 
+import com.skb.course.apis.libraryapis.model.common.Gender;
+
 public class TestConstants {
 
     public static final String API_TRACE_ID = "Test-Trace-Id";
@@ -15,4 +17,14 @@ public class TestConstants {
     // Test Author Details
     public static final String TEST_AUTHOR_FIRST_NAME = "TestAuthorFn";
     public static final String TEST_AUTHOR_LAST_NAME = "TestAuthorLn";
+
+    // Test User Details
+    public static final String TEST_USER_FIRST_NAME = "TestUserFn";
+    public static final String TEST_USER_LAST_NAME = "TestUserLn";
+    public static final String TEST_USER_USERNAME = "test.username";
+    public static final String TEST_USER_PASSWORD = "test.password";
+    public static final String TEST_USER_EMAIL = TEST_USER_USERNAME + "@email.con";
+    public static final String TEST_USER_PHONE = "223-344-566";
+    public static final String TEST_USER_PHONE_UPDATED = "111-344-908";
+    public static final Gender TEST_USER_GENDER = Gender.Female;
 }
