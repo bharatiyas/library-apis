@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -33,11 +34,14 @@ public class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     UserService userService;
 
     @Before
     public void setUp() throws Exception {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, bCryptPasswordEncoder);
     }
 
     @Test
