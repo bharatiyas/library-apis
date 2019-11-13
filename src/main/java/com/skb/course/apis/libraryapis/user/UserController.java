@@ -1,5 +1,6 @@
 package com.skb.course.apis.libraryapis.user;
 
+import com.skb.course.apis.libraryapis.exception.LibraryResourceUnauthorizedException;
 import com.skb.course.apis.libraryapis.user.User;
 import com.skb.course.apis.libraryapis.user.UserService;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceAlreadyExistException;
@@ -58,13 +59,24 @@ public class UserController {
     @PutMapping(path = "/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Integer userId,
                                              @Valid @RequestBody User user,
-                                             @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
-            throws LibraryResourceNotFoundException {
+                                             @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId,
+                                            @RequestHeader(value = "Authorization") String bearerToken)
+            throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
         if(!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
+        if(LibraryApiUtils.isUserAdmin(bearerToken)) {
+            logger.error("Trace Id: {}, even an admin user is not allowed to update a user's details", traceId);
+            throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to update a user's details");
+        }
+
+        int userIdInClaim = LibraryApiUtils.getUserIdFromClaim(bearerToken);
+        if(userIdInClaim != userId) {
+            logger.error("Trace Id: {}, UserId {} not allowed to update the details of another user {} ", traceId, userIdInClaim, userId);
+            throw new LibraryResourceUnauthorizedException(traceId, "Not allowed to update the details of another user");
+        }
         user.setUserId(userId);
         userService.updateUser(user, traceId);
 
