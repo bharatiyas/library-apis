@@ -30,11 +30,24 @@ public class UserController {
 
     @GetMapping(path = "/{userId}")
     public ResponseEntity<?> getUser(@PathVariable Integer userId,
-                                          @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
-            throws LibraryResourceNotFoundException {
+                                     @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId,
+                                     @RequestHeader(value = "Authorization") String bearerToken)
+            throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
         if(!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
+        }
+        logger.debug("Added TraceId: {}", traceId);
+
+        if(LibraryApiUtils.isUserAdmin(bearerToken)) {
+            logger.error("Trace Id: {}, even an admin user is not allowed to get a user's details", traceId);
+            throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to get a user's details");
+        }
+
+        int userIdInClaim = LibraryApiUtils.getUserIdFromClaim(bearerToken);
+        if(userIdInClaim != userId) {
+            logger.error("Trace Id: {}, UserId {} not allowed to get the details of another user {} ", traceId, userIdInClaim, userId);
+            throw new LibraryResourceUnauthorizedException(traceId, "Not allowed to get the details of another user");
         }
 
         return new ResponseEntity<>(userService.getUser(userId, traceId), HttpStatus.OK);
@@ -66,7 +79,7 @@ public class UserController {
         if(!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
-
+        logger.debug("Added TraceId: {}", traceId);
         if(LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error("Trace Id: {}, even an admin user is not allowed to update a user's details", traceId);
             throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to update a user's details");
@@ -79,20 +92,34 @@ public class UserController {
         }
         user.setUserId(userId);
         userService.updateUser(user, traceId);
-
+        logger.debug("Returning response for TraceId: {}", traceId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Integer userId,
-                                             @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
-            throws LibraryResourceNotFoundException {
+                                        @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId,
+                                        @RequestHeader(value = "Authorization") String bearerToken)
+            throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
         if(!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
+        logger.debug("Added TraceId: {}", traceId);
+
+        if(LibraryApiUtils.isUserAdmin(bearerToken)) {
+            logger.error("Trace Id: {}, even an admin user is not allowed to delete a user", traceId);
+            throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to delete a user");
+        }
+
+        int userIdInClaim = LibraryApiUtils.getUserIdFromClaim(bearerToken);
+        if(userIdInClaim != userId) {
+            logger.error("Trace Id: {}, UserId {} not allowed to delete another user {} ", traceId, userIdInClaim, userId);
+            throw new LibraryResourceUnauthorizedException(traceId, "Not allowed to delete another user");
+        }
 
         userService.deleteUser(userId, traceId);
+        logger.debug("Returning response for TraceId: {}", traceId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
@@ -109,7 +136,7 @@ public class UserController {
             logger.error("TraceId: {}, Please enter at least one search criteria to search Users!!", traceId);
             throw new LibraryResourceBadRequestException(traceId, "Please enter a name to search User.");
         }
-
+        logger.debug("Returning response for TraceId: {}", traceId);
         return new ResponseEntity<>(userService.searchUser(firstName, lastName, traceId), HttpStatus.OK);
     }
 }
