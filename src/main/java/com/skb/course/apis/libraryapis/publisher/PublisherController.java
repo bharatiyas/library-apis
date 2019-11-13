@@ -3,6 +3,7 @@ package com.skb.course.apis.libraryapis.publisher;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceAlreadyExistException;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceBadRequestException;
 import com.skb.course.apis.libraryapis.exception.LibraryResourceNotFoundException;
+import com.skb.course.apis.libraryapis.exception.LibraryResourceUnauthorizedException;
 import com.skb.course.apis.libraryapis.util.LibraryApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +40,18 @@ public class PublisherController {
 
     @PostMapping
     public ResponseEntity<?> addPublisher(@Valid @RequestBody Publisher publisher,
-                                          @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
-            throws LibraryResourceAlreadyExistException {
+                                          @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId,
+                                          @RequestHeader(value = "Authorization") String bearerToken)
+            throws LibraryResourceAlreadyExistException, LibraryResourceUnauthorizedException {
 
         logger.debug("Request to add Publisher: {}", publisher);
         if(!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
+        }
+
+        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+            logger.error(LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to add a Publisher. Disallowed because user is not Admin");
+            throw new LibraryResourceUnauthorizedException(traceId, "User not allowed to Add a Publisher");
         }
         logger.debug("Added TraceId: {}", traceId);
         publisherService.addPublisher(publisher, traceId);
