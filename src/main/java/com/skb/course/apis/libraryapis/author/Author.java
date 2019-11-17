@@ -1,10 +1,12 @@
 package com.skb.course.apis.libraryapis.author;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.skb.course.apis.libraryapis.model.common.Gender;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Author {
 
     private Integer authorId;
@@ -33,6 +35,12 @@ public class Author {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public Author(int authorId, String firstName, String lastName) {
+        this.authorId = authorId;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Integer getAuthorId() {

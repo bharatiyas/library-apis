@@ -1,10 +1,13 @@
 package com.skb.course.apis.libraryapis.author;
 
 
+import com.skb.course.apis.libraryapis.book.BookEntity;
 import com.skb.course.apis.libraryapis.model.common.Gender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "AUTHOR")
@@ -28,6 +31,11 @@ public class AuthorEntity {
     @Column(name = "Gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = CascadeType.ALL,
+                mappedBy = "authors")
+    private Set<BookEntity> books = new HashSet<>();
 
     public AuthorEntity() {
     }
