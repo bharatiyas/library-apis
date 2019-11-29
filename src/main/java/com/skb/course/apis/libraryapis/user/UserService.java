@@ -56,6 +56,7 @@ public class UserService {
         }
 
         userToBeAdded.setUserId(addedUser.getUserId());
+        userToBeAdded.setRole(Role.USER);
         logger.info("TraceId: {}, User added: {}", traceId, userToBeAdded);
     }
 

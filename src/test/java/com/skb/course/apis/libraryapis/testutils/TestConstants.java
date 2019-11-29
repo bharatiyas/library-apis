@@ -27,4 +27,9 @@ public class TestConstants {
     public static final String TEST_USER_PHONE = "223-344-566";
     public static final String TEST_USER_PHONE_UPDATED = "111-344-908";
     public static final Gender TEST_USER_GENDER = Gender.Female;
+
+    // User API URIs
+    public static final String USER_API_REGISTER_URI = "/v1/users";
+    public static final String LOGIN_URI = "/login";
+    public static final String USER_API_BASE_URI = "/v1/users";
 }
