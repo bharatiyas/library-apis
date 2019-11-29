@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public class LibraryApiTestUtil {
 
+    private static int userCtr;
+
     public static Publisher createPublisher() {
         return new Publisher(null, TestConstants.TEST_PUBLISHER_NAME,
                 TestConstants.TEST_PUBLISHER_EMAIL,
@@ -45,9 +47,10 @@ public class LibraryApiTestUtil {
 
     public static User createUser(String username) {
 
-        return new User(username, TestConstants.TEST_USER_FIRST_NAME,
+
+        return new User(username + userCtr++, TestConstants.TEST_USER_FIRST_NAME,
                 TestConstants.TEST_USER_LAST_NAME, LocalDate.now().minusYears(30), Gender.Female, TestConstants.TEST_USER_PHONE,
-                username + "@email.com");
+                username + userCtr + "@email.com");
 
     }
 
