@@ -201,7 +201,30 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public void returnBooks(int userId, Integer bookId, String traceId) throws LibraryResourceNotFoundException {
 
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+
+        if(userEntity.isPresent()) {
+            List<UserBookEntity> byUserIdAndBookId = userBookEntityRepository.findByUserIdAndBookId(userId, bookId);
+            if(byUserIdAndBookId != null && byUserIdAndBookId.size() > 0) {
+                // Return the book
+                userBookEntityRepository.delete(byUserIdAndBookId.get(0));
+
+                // Manage the number of issued copies
+                Optional<BookEntity> be = bookRepository.findById(bookId);
+                BookStatusEntity bs = be.get().getBookStatus();
+                bs.setNumberOfCopiesIssued(bs.getNumberOfCopiesIssued() - 1);
+                bookStatusRepository.save(bs);
+            } else {
+                throw new LibraryResourceNotFoundException(traceId, "Book Id: " + bookId + " has not been issued to User Id: "+ userId + ". So can't be returned.");
+            }
+
+        } else {
+            throw new LibraryResourceNotFoundException(traceId, "Library User Id: " + userId + " Not Found");
+        }
+    }
 
     public User getUserByUsername(String username) throws LibraryResourceNotFoundException {
 

@@ -169,4 +169,27 @@ public class UserController {
         return new ResponseEntity<>(issueBookResponse, HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "/{userId}/books/{bookId}")
+    public ResponseEntity<?> returnBooks(@PathVariable int userId, @PathVariable int bookId,
+                                         @RequestHeader("Authorization") String bearerToken,
+                                         @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
+            throws LibraryResourceUnauthorizedException, LibraryResourceBadRequestException, LibraryResourceNotFoundException {
+        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+            traceId = UUID.randomUUID().toString();
+        }
+        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+            // Logging UserId for security audit trail.
+            logger.error(traceId +  LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to return Books. Disallowed. " +
+                    "User is not a Admin.");
+            throw new LibraryResourceUnauthorizedException(traceId, " attempted to delete Books. Disallowed.");
+        }
+        try {
+            userService.returnBooks(userId, bookId, traceId);
+        } catch (LibraryResourceNotFoundException e) {
+            logger.error(traceId + e.getMessage());
+            throw e;
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
 }
