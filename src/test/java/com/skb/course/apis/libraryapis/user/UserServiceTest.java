@@ -1,5 +1,7 @@
 package com.skb.course.apis.libraryapis.user;
 
+import com.skb.course.apis.libraryapis.book.*;
+import com.skb.course.apis.libraryapis.publisher.PublisherRepository;
 import com.skb.course.apis.libraryapis.user.User;
 import com.skb.course.apis.libraryapis.user.UserEntity;
 import com.skb.course.apis.libraryapis.user.UserRepository;
@@ -19,10 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,16 +31,34 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Mock
+    private BookRepository bookRepository;
+
+    @Mock
+    private BookStatusRepository bookStatusRepository;
+
+    @Mock
+    private BookService bookService;
+
+    @Mock
+    private PublisherRepository publisherRepository;
+
+    @Mock
+    private UserBookEntityRepository userBookEntityRepository;
+
     UserService userService;
 
     @Before
-    public void setUp() throws Exception {
-        userService = new UserService(userRepository, bCryptPasswordEncoder);
+    public void setUp() {
+
+        userService = new UserService(bCryptPasswordEncoder, userRepository,
+                bookRepository, bookStatusRepository,
+                bookService, userBookEntityRepository);
     }
 
     @Test
@@ -219,5 +236,60 @@ public class UserServiceTest {
         verify(userRepository, times(1))
                 .findByFirstNameAndLastNameContaining(TestConstants.TEST_AUTHOR_FIRST_NAME, TestConstants.TEST_AUTHOR_LAST_NAME);
         assertEquals(0, users.size());
+    }
+
+    @Test
+    public void issueBooks_success() throws LibraryResourceNotFoundException, LibraryResourceAlreadyExistException {
+
+        // Add a user
+        UserEntity userEntity = LibraryApiTestUtil.createUserEntity(TestConstants.TEST_USER_USERNAME);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        //User libraryUser = userService.addUser(LibraryApiTestUtil.createUser(TestConstants.TEST_USER_USERNAME), TestConstants.API_TRACE_ID);
+        User user = LibraryApiTestUtil.createUser(TestConstants.TEST_USER_USERNAME);
+        userService.addUser(user, TestConstants.API_TRACE_ID);
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+
+        // Add a book
+        bookService.addBook(LibraryApiTestUtil.createBook(1), TestConstants.API_TRACE_ID);
+
+        when(bookRepository.findById(anyInt())).thenReturn(LibraryApiTestUtil.createBookEntityOptional());
+
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(userEntity));
+
+        Set<Integer> books = new HashSet<>(1);
+        books.add(1);
+        IssueBookResponse issueBookResponse = userService.issueBooks(user.getUserId(), books, TestConstants.API_TRACE_ID);
+
+        assertNotNull(issueBookResponse);
+        assertNotNull(issueBookResponse.getIssueBookStatuses());
+        assertEquals(1, issueBookResponse.getIssueBookStatuses().size());
+        assertEquals(1, issueBookResponse.getIssueBookStatuses().stream()
+                .filter(issueBookStatus -> issueBookStatus.getStatus().equals("Issued"))
+                .count()
+        );
+    }
+
+    @Test(expected = LibraryResourceNotFoundException.class)
+    public void issueBooks_failure_book_not_found() throws LibraryResourceNotFoundException, LibraryResourceAlreadyExistException {
+
+        // Add a user
+        UserEntity userEntity = LibraryApiTestUtil.createUserEntity(TestConstants.TEST_USER_USERNAME);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+        User user = LibraryApiTestUtil.createUser(TestConstants.TEST_USER_USERNAME);
+
+        Set<Integer> books = new HashSet<>(1);
+        books.add(1);
+        IssueBookResponse issueBookResponse = userService.issueBooks(1234, books, TestConstants.API_TRACE_ID);
+        assertNotNull(issueBookResponse);
+        assertNotNull(issueBookResponse.getIssueBookStatuses());
+        assertEquals(1, issueBookResponse.getIssueBookStatuses().size());
+        assertEquals(1, issueBookResponse.getIssueBookStatuses().stream()
+                .filter(issueBookStatus -> issueBookStatus.getStatus().equals("Not Issued"))
+                .count()
+        );
+        assertEquals(1, issueBookResponse.getIssueBookStatuses().stream()
+                .filter(issueBookStatus -> issueBookStatus.getRemarks().equals("Book Not Found"))
+                .count()
+        );
     }
 }

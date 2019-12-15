@@ -2,6 +2,7 @@ package com.skb.course.apis.libraryapis.testutils;
 
 import com.skb.course.apis.libraryapis.author.Author;
 import com.skb.course.apis.libraryapis.author.AuthorEntity;
+import com.skb.course.apis.libraryapis.book.*;
 import com.skb.course.apis.libraryapis.model.common.Gender;
 import com.skb.course.apis.libraryapis.publisher.Publisher;
 import com.skb.course.apis.libraryapis.publisher.PublisherEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class LibraryApiTestUtil {
 
     private static int userCtr;
+    private static int bookCtr;
 
     public static Publisher createPublisher() {
         return new Publisher(null, TestConstants.TEST_PUBLISHER_NAME,
@@ -63,5 +65,36 @@ public class LibraryApiTestUtil {
 
     public static Optional<UserEntity> createUserEntityOptional(String username) {
         return Optional.of(createUserEntity(username));
+    }
+
+    public static BookEntity createBookEntity() {
+        BookEntity be = new BookEntity(TestConstants.TEST_BOOK_ISBN, TestConstants.TEST_BOOK_TITLE,
+                TestConstants.TEST_BOOK_YEAR_PUBLISHED, TestConstants.TEST_BOOK_EDITION);
+        be.setPublisher(createPublisherEntity());
+        be.setBookStatus(createBookStatusEntity(0));
+        return be;
+    }
+
+    public static BookStatusEntity createBookStatusEntity(int bookId) {
+        return new BookStatusEntity(bookId, BookStatusState.Active, 3, 0);
+    }
+
+    public static Book createBook(int publisherId) {
+
+        bookCtr++;
+
+        // Create a new Book object
+        return new Book(TestConstants.TEST_BOOK_ISBN + bookCtr,
+                TestConstants.TEST_BOOK_TITLE + "-" + bookCtr, publisherId,
+                TestConstants.TEST_BOOK_YEAR_PUBLISHED, TestConstants.TEST_BOOK_EDITION, createBookStatus());
+
+    }
+
+    public static BookStatus createBookStatus() {
+        return new BookStatus(BookStatusState.Active, 3, 0);
+    }
+
+    public static Optional<BookEntity> createBookEntityOptional() {
+        return Optional.of(createBookEntity());
     }
 }

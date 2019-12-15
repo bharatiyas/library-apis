@@ -28,6 +28,12 @@ public class TestConstants {
     public static final String TEST_USER_PHONE_UPDATED = "111-344-908";
     public static final Gender TEST_USER_GENDER = Gender.Female;
 
+    // Test Book Details
+    public static final String TEST_BOOK_ISBN = "978-3-16-148410-";
+    public static final String TEST_BOOK_TITLE = "SpringBoot Is Fun";
+    public static final int TEST_BOOK_YEAR_PUBLISHED = 2010;
+    public static final String TEST_BOOK_EDITION = "First Edition";
+
     // User API URIs
     public static final String USER_API_REGISTER_URI = "/v1/users";
     public static final String LOGIN_URI = "/login";
