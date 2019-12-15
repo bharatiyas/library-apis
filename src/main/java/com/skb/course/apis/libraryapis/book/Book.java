@@ -49,14 +49,23 @@ public class Book {
     }
 
     public Book(int bookId, String isbn, String title, int publisherid, int yearPublished, String edition,
-                BookStatus bookStatusFromEntity) {
+                BookStatus bookStatus) {
         this.bookId = bookId;
         this.isbn = isbn;
         this.title = title;
         this.publisherId = publisherId;
         this.yearPublished = yearPublished;
         this.edition = edition;
-        this.bookStatus = bookStatusFromEntity;
+        this.bookStatus = bookStatus;
+    }
+
+    public Book(String isbn, String title, Integer publisherId, int yearPublished, String edition, BookStatus bookStatus) {
+        this.isbn = isbn;
+        this.title = title;
+        this.publisherId = publisherId;
+        this.yearPublished = yearPublished;
+        this.edition = edition;
+        this.bookStatus = bookStatus;
     }
 
     public Integer getBookId() {
