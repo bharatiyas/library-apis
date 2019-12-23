@@ -72,6 +72,16 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Used for Integration Tests. Spring's TestRestTemplate throws an error while sending PUT requests with
+         authorization error: java.net.HttpRetryException: cannot retry due to server authentication, in streaming mode
+         Therefore we need to use Apaches's HTTP client. Please refer:
+         https://stackoverflow.com/questions/16748969/java-net-httpretryexception-cannot-retry-due-to-server-authentication-in-stream
+            -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
