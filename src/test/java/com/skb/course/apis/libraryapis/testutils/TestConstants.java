@@ -4,6 +4,9 @@ import com.skb.course.apis.libraryapis.model.common.Gender;
 
 public class TestConstants {
 
+    // Base URL
+    public static final String API_BASE_URL = "http://localhost:";
+
     public static final String API_TRACE_ID = "Test-Trace-Id";
 
     // Test Publisher Details
@@ -38,4 +41,5 @@ public class TestConstants {
     public static final String USER_API_REGISTER_URI = "/v1/users";
     public static final String LOGIN_URI = "/login";
     public static final String USER_API_BASE_URI = "/v1/users";
+    public static final String USER_API_SEARCH_URI = USER_API_BASE_URI + "/search";
 }

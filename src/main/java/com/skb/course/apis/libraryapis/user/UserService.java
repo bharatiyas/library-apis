@@ -103,10 +103,11 @@ public class UserService {
                 ue.setPhoneNumber(userToBeUpdated.getPhoneNumber());
             }
             if(LibraryApiUtils.doesStringValueExist(userToBeUpdated.getPassword())) {
-                ue.setPassword(userToBeUpdated.getPassword());
+                ue.setPassword(bCryptPasswordEncoder.encode(userToBeUpdated.getPassword()));
             }
             userRepository.save(ue);
             userToBeUpdated = createUserFromEntity(ue);
+
         } else {
             throw new LibraryResourceNotFoundException(traceId, "User Id: " + userToBeUpdated.getUserId() + " Not Found");
         }
