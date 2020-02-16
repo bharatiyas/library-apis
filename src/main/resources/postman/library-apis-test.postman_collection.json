@@ -11,6 +11,16 @@
 				{
 					"name": "Create-Publisher",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWItYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE1NzM4MDI4MjQsInVzZXJJZCI6NDIxNH0.u8TywGS_vk0B0ovB0VJ1drLaauXCqqkmFZJme6iZkgk8K3mT93x0FWlf4YpPLoX6s6BA148_hl6K4vMw4D09fQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -28,7 +38,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Fox Publishers\",\n\t\"emailId\":\"foxpublishers@email.com\",\n\t\"phoneNumber\":\"563-458-700\"\n\t\n}",
+							"raw": "{\n\t\"name\": \"Foxy Publishers\",\n\t\"emailId\":\"foxypublishers@email.com\",\n\t\"phoneNumber\":\"568-458-700\"\n\t\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -172,6 +182,16 @@
 				{
 					"name": "Create-Author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWItYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE1NzM2ODA4NjcsInVzZXJJZCI6NDIxN30.UB9Opc7pxJtRggp3FJN4HcA230_PqCErQJDICaKozM_rHcVc-bJN8cpbB5bo6Gp1l1xw_DW5jyX2Bo3BSlidHQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -188,7 +208,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Blake\",\n  \"dateOfBirth\": \"1960-01-20\",\n  \"gender\": \"Male\"\n\t\n}",
+							"raw": "{\n  \"firstName\": \"Simon\",\n  \"lastName\": \"Blake\",\n  \"dateOfBirth\": \"1970-01-20\",\n  \"gender\": \"Male\"\n\t\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -324,7 +344,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"jblake2\",\t\n  \"firstName\": \"John\",\n  \"lastName\": \"Blakee\",\n  \"dateOfBirth\": \"1960-01-20\",\n  \"gender\": \"Male\",\n  \"phoneNumber\": \"223-456-789\",\n  \"emailId\": \"jblake2@email.com\"\n\t\n}",
+							"raw": "{\n  \"username\": \"jblake3\",\t\n  \"firstName\": \"John\",\n  \"lastName\": \"Blaky\",\n  \"dateOfBirth\": \"1965-01-20\",\n  \"gender\": \"Male\",\n  \"phoneNumber\": \"223-456-789\",\n  \"emailId\": \"jblake3@email.com\"\n\t\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -332,7 +352,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/users/",
+							"raw": "http://localhost:8080/v1/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -340,8 +360,7 @@
 							"port": "8080",
 							"path": [
 								"v1",
-								"users",
-								""
+								"users"
 							]
 						}
 					},
@@ -350,19 +369,37 @@
 				{
 					"name": "Get-User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYmxha2UzIiwicm9sZSI6IlVTRVIiLCJleHAiOjE1NzM1OTc2MDgsInVzZXJJZCI6NDIxNn0.JEgQCkQyLiCBwF2O_3lfLgpRanHQvr9saIVgaxtGoPiUFnYRBf9k3nnOB_2NlrGty2uiQ_fWohrD3HtiEbEbHQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-apikey",
+								"value": "XBHt4jqJlLPsBmBd98FSdDS7xcYZJMd9",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/v1/users/4213",
+							"raw": "http://sanjayfromgomia-eval-test.apigee.net/library-api/v1/users/4216",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"sanjayfromgomia-eval-test",
+								"apigee",
+								"net"
 							],
-							"port": "8080",
 							"path": [
+								"library-api",
 								"v1",
 								"users",
-								"4213"
+								"4216"
 							]
 						}
 					},
@@ -371,6 +408,16 @@
 				{
 					"name": "Update-User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYmxha2UzIiwicm9sZSI6IlVTRVIiLCJleHAiOjE1NzM2MzI0ODgsInVzZXJJZCI6NDIxNn0.cKKpHjV2zOJJJHcm-OjTrhCL3anqM-LKGPJ3t7Lh-hNQF_E3zqtua4kPV5I5aGMOkaPbuYnnJC7pyzHulAMyTQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -406,12 +453,38 @@
 					"response": []
 				},
 				{
-					"name": "Delete-User",
+					"name": "ChangePassword-User",
 					"request": {
-						"method": "DELETE",
-						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"jblake3\",\t\n  \"password\": \"NewPassword\"\n  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/v1/users/4211",
+							"raw": "http://localhost:8080/v1/users/4216",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -420,7 +493,38 @@
 							"path": [
 								"v1",
 								"users",
-								"4211"
+								"4216"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWItYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE1NzM2ODA4NjcsInVzZXJJZCI6NDIxN30.UB9Opc7pxJtRggp3FJN4HcA230_PqCErQJDICaKozM_rHcVc-bJN8cpbB5bo6Gp1l1xw_DW5jyX2Bo3BSlidHQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/users/4216",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"4216"
 							]
 						}
 					},
@@ -464,10 +568,112 @@
 				{
 					"name": "Login-User",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"jblake3\",\n\t\"password\": \"Password123\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login-User-NgRok",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"jblake3\",\n\t\"password\": \"Password123\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://3a5f6d5d.ngrok.io/login",
+							"protocol": "http",
+							"host": [
+								"3a5f6d5d",
+								"ngrok",
+								"io"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login-User-Apigee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-apikey",
+								"value": "XBHt4jqJlLPsBmBd98FSdDS7xcYZJMd9",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"jblake3\",\n\t\"password\": \"Password123\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://sanjayfromgomia-eval-test.apigee.net/library-api/login",
+							"protocol": "http",
+							"host": [
+								"sanjayfromgomia-eval-test",
+								"apigee",
+								"net"
+							],
+							"path": [
+								"library-api",
+								"login"
+							]
 						}
 					},
 					"response": []
@@ -475,10 +681,350 @@
 				{
 					"name": "Login-Admin",
 					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"lib-admin\",\n\t\"password\": \"admin-password\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Issue-Books",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Trace-Id",
+								"value": "Create-Publisher-5678",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"jblake3\",\t\n  \"firstName\": \"John\",\n  \"lastName\": \"Blaky\",\n  \"dateOfBirth\": \"1965-01-20\",\n  \"gender\": \"Male\",\n  \"phoneNumber\": \"223-456-789\",\n  \"emailId\": \"jblake3@email.com\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "book",
+			"item": [
+				{
+					"name": "Create-Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Trace-Id",
+								"value": "Create-Publisher-5678",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isbn\": \"34rrt56-ddfret-3545453-hjghjkfg888\",\t\n  \"title\": \"Learning APIs with Spring Boot\",\n  \"yearPublished\": \"2018\",\n  \"publisherId\": 1203,\n  \"edition\": \"First Edition\",\n  \"bookStatus\": {\n  \t\t\"state\": \"Active\",\n  \t\t\"totalNumberOfCopies\": 3\n  }\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/books/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8080/v1/books/2553",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"books",
+								"2553"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isbn\": \"rr567-ddfret-3545453-tt453\",\n  \"title\": \"Learning APIs Is Fun\",\n  \"yearPublished\": \"2018\",\n  \"publisherId\": 1203,\n  \"edition\": \"First Edition\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/books/2553",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"books",
+								"2553"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddAuthors-Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[3064, 3065]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/books/2653/authors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"books",
+								"2653",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/users/4211",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"4211"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search-Book-Title",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/users/search?firstName=John&lastName=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "John"
+								},
+								{
+									"key": "lastName",
+									"value": ""
+								},
+								{
+									"key": null,
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search-Book-ISBN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/users/search?firstName=John&lastName=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "John"
+								},
+								{
+									"key": "lastName",
+									"value": ""
+								},
+								{
+									"key": null,
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
