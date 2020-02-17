@@ -32,23 +32,12 @@ public class LibraryApiSecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                     .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                    //.and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
 
     }
-
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
-    @Bean
-    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
-
-    @Bean
-    CustomAuthenticationFailureHandler accessDeniedHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
 }

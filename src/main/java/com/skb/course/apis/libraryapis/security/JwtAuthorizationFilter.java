@@ -3,6 +3,9 @@ package com.skb.course.apis.libraryapis.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skb.course.apis.libraryapis.model.common.LibraryApiError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,15 +19,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.util.*;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
+    private static Logger logger = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
@@ -45,50 +47,26 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         try {
             authenticationToken = getAuthentication(authorizationHeader);
         } catch (JWTVerificationException verificationException) {
+            String traceId = UUID.randomUUID().toString();
+            logger.error("TraceId: {}, JWT Token Not Valid!!", traceId, verificationException);
+            LibraryApiError errorResponse = new LibraryApiError(traceId, "Invalid JWT Token. Please Login Again!!");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            Map<String, Object> data = new HashMap<>();
-            data.put(
-                    "timestamp",
-                    Calendar.getInstance().getTime());
-            data.put(
-                    "exception",
-                    verificationException.getMessage());
-
+            response.setContentType("application/json");
             try {
-                response.getOutputStream()
-                        .println( "Token Expire. Please login again!!");
 
-
+                PrintWriter writer = response.getWriter();
+                writer.print(objectMapper.writeValueAsString(errorResponse));
+                writer.flush();
+                return;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("TraceId: {}, Error while writing response!!", traceId, e);
             }
 
-            chain.doFilter(request, response);
         }
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request, response);
     }
-
-   /* @Override
-    protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
-
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        Map<String, Object> data = new HashMap<>();
-        data.put(
-                "timestamp",
-                Calendar.getInstance().getTime());
-        data.put(
-                "exception",
-                failed.getMessage());
-
-        try {
-            response.getOutputStream()
-                    .println(objectMapper.writeValueAsString(data));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     private UsernamePasswordAuthenticationToken getAuthentication(String authorizationHeader) {
 
